@@ -1,6 +1,6 @@
 # fwCLI
 
-Maintain microservices in your hands
+Build microservices in your hands
 
 ## Roadmap
 
