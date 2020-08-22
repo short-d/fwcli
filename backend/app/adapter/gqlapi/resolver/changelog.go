@@ -1,7 +1,7 @@
 package resolver
 
 import (
-	"github.com/short-d/app-template/backend/app/entity"
+	"fwcli/app/entity"
 )
 
 // ChangeLog retrieves full change log and the time when the user viewed it.

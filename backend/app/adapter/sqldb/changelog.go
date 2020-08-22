@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/short-d/app-template/backend/app/adapter/sqldb/table"
-	"github.com/short-d/app-template/backend/app/entity"
-	"github.com/short-d/app-template/backend/app/usecase/repo"
+	"fwcli/app/adapter/sqldb/table"
+	"fwcli/app/entity"
+	"fwcli/app/usecase/repo"
 )
 
 var _ repo.ChangeLog = (*ChangeLogSQL)(nil)

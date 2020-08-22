@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: staging
-  name: api-web
+  name: fwcli-web
   labels:
-    app: api
+    app: fwcli
     tier: frontend
 spec:
   replicas: 1
@@ -13,29 +13,29 @@ spec:
   revisionHistoryLimit: 3
   template:
     metadata:
-      name: api-web
+      name: fwcli-web
       labels:
-        app: api
+        app: fwcli
         tier: frontend
     spec:
       containers:
-        - name: api-web
-          image: shortorg/api-web-staging
+        - name: fwcli-web
+          image: shortorg/fwcli-web-staging
           imagePullPolicy: Always
       restartPolicy: Always
   selector:
     matchLabels:
-      app: api
+      app: fwcli
       tier: frontend
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: staging
-  name: api-web
+  name: fwcli-web
 spec:
   selector:
-    app: api
+    app: fwcli
     tier: frontend
   ports:
     - port: 80
@@ -44,7 +44,7 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   namespace: staging
-  name: api-web
+  name: fwcli-web
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/frontend-entry-points: http,https
@@ -53,12 +53,12 @@ metadata:
 spec:
   tls:
     - hosts:
-        - api-staging.short-d.com
+        - fwcli-staging.short-d.com
       secretName: short-d.com-tls
   rules:
-    - host: api-staging.short-d.com
+    - host: fwcli-staging.short-d.com
       http:
         paths:
           - backend:
-              serviceName: api-web
+              serviceName: fwcli-web
               servicePort: 80

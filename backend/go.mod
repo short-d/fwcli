@@ -1,4 +1,4 @@
-module github.com/short-d/app-template/backend
+module fwcli
 
 go 1.14
 

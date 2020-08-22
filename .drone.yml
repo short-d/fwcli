@@ -5,7 +5,7 @@ steps:
   - name: build staging backend Docker image
     image: docker
     commands:
-      - docker build -t api:latest -f api/Dockerfile api
+      - docker build -t fwcli-backend:latest -f backend/Dockerfile backend
     volumes:
       - name: docker
         path: /var/run/docker.sock
@@ -26,8 +26,8 @@ steps:
         from_secret: DOCKERHUB_ORG_ID
     commands:
       - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-      - docker tag api:latest $DOCKERHUB_ORG_ID/api-staging:latest
-      - docker push $DOCKERHUB_ORG_ID/api-staging:latest
+      - docker tag fwcli-backend:latest $DOCKERHUB_ORG_ID/fwcli-backend-staging:latest
+      - docker push $DOCKERHUB_ORG_ID/fwcli-backend-staging:latest
     volumes:
       - name: docker
         path: /var/run/docker.sock
@@ -48,8 +48,8 @@ steps:
         from_secret: DOCKERHUB_ORG_ID
     commands:
       - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
-      - docker tag api:latest $DOCKERHUB_ORG_ID/api:latest
-      - docker push $DOCKERHUB_ORG_ID/api:latest
+      - docker tag fwcli-backend:latest $DOCKERHUB_ORG_ID/fwcli-backend:latest
+      - docker push $DOCKERHUB_ORG_ID/fwcli-backend:latest
     volumes:
       - name: docker
         path: /var/run/docker.sock

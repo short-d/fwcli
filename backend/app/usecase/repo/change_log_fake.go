@@ -1,7 +1,7 @@
 package repo
 
 import (
-	"github.com/short-d/app-template/backend/app/entity"
+	"fwcli/app/entity"
 )
 
 var _ ChangeLog = (*ChangeLogFake)(nil)

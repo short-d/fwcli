@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/short-d/app-template/backend/app/adapter/gqlapi"
-	"github.com/short-d/app-template/backend/app/adapter/gqlapi/resolver"
-	"github.com/short-d/app-template/backend/app/adapter/sqldb"
-	"github.com/short-d/app-template/backend/app/usecase/changelog"
-	"github.com/short-d/app-template/backend/dep"
+	"fwcli/app/adapter/gqlapi"
+	"fwcli/app/adapter/gqlapi/resolver"
+	"fwcli/app/adapter/sqldb"
+	"fwcli/app/usecase/changelog"
+	"fwcli/dep"
 	"github.com/short-d/app/fw/db"
 	"github.com/short-d/app/fw/envconfig"
 	"github.com/short-d/app/fw/filesystem"
@@ -23,7 +23,7 @@ func main() {
 		DBPort     int    `env:"DB_PORT" default:"5432"`
 		DBUser     string `env:"DB_USER" default:"postgres"`
 		DBPassword string `env:"DB_PASSWORD" default:"password"`
-		DBName     string `env:"DB_NAME" default:"short"`
+		DBName     string `env:"DB_NAME" default:"fwcli"`
 	}{}
 	err := envConfig.ParseConfigFromEnv(&config)
 	if err != nil {

@@ -1,8 +1,8 @@
 package changelog
 
 import (
-	"github.com/short-d/app-template/backend/app/entity"
-	"github.com/short-d/app-template/backend/app/usecase/repo"
+	"fwcli/app/entity"
+	"fwcli/app/usecase/repo"
 )
 
 // Persist retrieves change log from and saves changes to persistent data store.

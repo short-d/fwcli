@@ -1,8 +1,8 @@
 package resolver
 
 import (
-	"github.com/short-d/app-template/backend/app/adapter/gqlapi/scalar"
-	"github.com/short-d/app-template/backend/app/entity"
+	"fwcli/app/adapter/gqlapi/scalar"
+	"fwcli/app/entity"
 )
 
 // Change retrieves requested fields of a Change.

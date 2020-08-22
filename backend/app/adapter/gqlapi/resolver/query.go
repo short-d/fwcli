@@ -1,6 +1,6 @@
 package resolver
 
-import "github.com/short-d/app-template/backend/app/usecase/changelog"
+import "fwcli/app/usecase/changelog"
 
 // Query represents GraphQL query resolver
 type Query struct {

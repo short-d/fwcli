@@ -1,7 +1,7 @@
 package resolver
 
 import (
-	"github.com/short-d/app-template/backend/app/usecase/changelog"
+	"fwcli/app/usecase/changelog"
 )
 
 // AuthQuery represents GraphQL query resolver that acts differently based

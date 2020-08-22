@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: staging
-  name: api
+  namespace: production
+  name: fwcli-backend
   labels:
-    app: api
+    app: fwcli
     tier: backend
 spec:
   replicas: 1
@@ -13,17 +13,17 @@ spec:
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-      app: api
+      app: fwcli
       tier: backend
   template:
     metadata:
       labels:
-        app: api
+        app: fwcli
         tier: backend
     spec:
       containers:
-        - name: api
-          image: shortorg/api-staging
+        - name: fwcli-backend
+          image: shortorg/fwcli-backend
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
@@ -33,38 +33,38 @@ spec:
             - name: DB_HOST
               valueFrom:
                 secretKeyRef:
-                  name: api-db
+                  name: fwcli-db
                   key: host
             - name: DB_PORT
               valueFrom:
                 secretKeyRef:
-                  name: api-db
+                  name: fwcli-db
                   key: port
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: api-db
+                  name: fwcli-db
                   key: user
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: api-db
+                  name: fwcli-db
                   key: password
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
-                  name: api-db
+                  name: fwcli-db
                   key: name
       restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: staging
-  name: api
+  namespace: production
+  name: fwcli-backend
 spec:
   selector:
-    app: api
+    app: fwcli
     tier: backend
   ports:
     - name: graphql
@@ -74,8 +74,8 @@ spec:
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  namespace: staging
-  name: api
+  namespace: production
+  name: fwcli-backend
   annotations:
     kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/frontend-entry-points: http,https
@@ -86,12 +86,12 @@ metadata:
 spec:
   tls:
     - hosts:
-        - gql-api-staging.short-d.com
+        - gql-fwcli.short-d.com
       secretName: short-d.com-tls
   rules:
-    - host: gql-api-staging.short-d.com
+    - host: gql-fwcli.short-d.com
       http:
         paths:
           - backend:
-              serviceName: api
+              serviceName: fwcli-backend
               servicePort: graphql

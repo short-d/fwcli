@@ -5,8 +5,8 @@ package changelog
 import (
 	"testing"
 
-	"github.com/short-d/app-template/backend/app/entity"
-	"github.com/short-d/app-template/backend/app/usecase/repo"
+	"fwcli/app/entity"
+	"fwcli/app/usecase/repo"
 	"github.com/short-d/app/fw/assert"
 )
 

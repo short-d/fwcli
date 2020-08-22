@@ -1,7 +1,7 @@
 package gqlapi
 
 import (
-	"github.com/short-d/app-template/backend/app/adapter/gqlapi/resolver"
+	"fwcli/app/adapter/gqlapi/resolver"
 	"github.com/short-d/app/fw/filesystem"
 	"github.com/short-d/app/fw/graphql"
 )
