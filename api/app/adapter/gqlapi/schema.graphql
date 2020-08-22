@@ -1,0 +1,62 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+"""Read APIs for Teamy"""
+type Query {
+    """
+    Fetch desired attributes of objects from the persistent data store on
+    behalf of the given user.
+    """
+    authQuery(
+        "JWT token needed to verify and identify a user"
+        authToken: String
+    ): AuthQuery
+}
+
+"""Write APIs for Teamy"""
+type Mutation {
+    """
+    Create, update & delete objects from the persistent data store on behalf of
+    the given user.
+    """
+    authMutation(
+        "JWT token needed to verify and identify a user"
+        authToken: String,
+
+        "The page interaction patterns needed to verify the requester is human"
+        captchaResponse: String!
+    ): AuthMutation
+}
+
+"""Read APIs protected with authentication"""
+type AuthQuery {
+    """Fetch the all the changes visible to the current user"""
+    changeLog: ChangeLog!
+}
+
+"""Write APIs protected authentication"""
+type AuthMutation {
+}
+
+"""A sequence of changes visible to a given user"""
+type ChangeLog {
+    """The changes announced to the user"""
+    changes: [Change!]!
+}
+
+"""The announcement for a newly launched feature, a bug fix or a policy change"""
+type Change {
+    """ID of the change"""
+    id: String!
+
+    """The title of the change"""
+    title: String!
+}
+
+"""
+The time is represented either by a unix timestamp (integer/float64)  or a string in
+RFC3339 format (2019-10-12T07:20:50.52Z).
+"""
+scalar Time

@@ -37,6 +37,7 @@ func newNew(factory cli.CommandFactory) cli.Command {
 	return factory.NewCommand(config)
 }
 
+
 func initializeRepo(serviceName string) {
 	fmt.Println("Initializing repository")
 	gitPath := filepath.Join(serviceName, ".git")
@@ -132,6 +133,13 @@ func updateAppName(serviceName string) {
 	fmt.Println("Updating service name in Kubernetes configs")
 	k8sConfigPath := filepath.Join(serviceName, "k8s")
 	err = replaceString(k8sConfigPath, defaultAppName, serviceName)
+	if err != nil {
+		crash(err)
+	}
+
+	fmt.Println("Updating go module name")
+	backendCodePath := filepath.Join(serviceName, "backend")
+	err = replaceString(backendCodePath, "github.com/short-d/app-template/backend", serviceName)
 	if err != nil {
 		crash(err)
 	}

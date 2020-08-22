@@ -1,0 +1,50 @@
+// +build integration all
+
+package sqldb_test
+
+import (
+	"testing"
+
+	"github.com/short-d/app/fw/db"
+	"github.com/short-d/app/fw/envconfig"
+	"github.com/short-d/short/backend/dep"
+)
+
+var dbConnector db.Connector
+var dbMigrationTool db.MigrationTool
+
+var dbConfig db.Config
+var dbMigrationRoot = "./migration"
+
+func TestMain(m *testing.M) {
+	env := dep.InjectEnv()
+	env.AutoLoadDotEnvFile()
+
+	envConfig := envconfig.NewEnvConfig(env)
+
+	config := struct {
+		DBHost     string `env:"DB_HOST" default:"localhost"`
+		DBPort     int    `env:"DB_PORT" default:"5432"`
+		DBUser     string `env:"DB_USER" default:"postgres"`
+		DBPassword string `env:"DB_PASSWORD" default:"password"`
+		DBName     string `env:"DB_NAME" default:"short"`
+	}{}
+
+	err := envConfig.ParseConfigFromEnv(&config)
+	if err != nil {
+		panic(err)
+	}
+
+	dbConfig = db.Config{
+		Host:     config.DBHost,
+		Port:     config.DBPort,
+		User:     config.DBUser,
+		Password: config.DBPassword,
+		DbName:   config.DBName,
+	}
+
+	dbConnector = dep.InjectDBConnector()
+	dbMigrationTool = dep.InjectDBMigrationTool()
+
+	m.Run()
+}

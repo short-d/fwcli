@@ -1,0 +1,64 @@
+kind: pipeline
+name: default
+
+steps:
+  - name: build staging backend Docker image
+    image: docker
+    commands:
+      - docker build -t api:latest -f api/Dockerfile api
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+    when:
+      branch:
+        - master
+      event:
+        - push
+
+  - name: publish staging images to DockerHub
+    image: docker
+    environment:
+      DOCKERHUB_USERNAME:
+        from_secret: DOCKERHUB_USERNAME
+      DOCKERHUB_PASSWORD:
+        from_secret: DOCKERHUB_PASSWORD
+      DOCKERHUB_ORG_ID:
+        from_secret: DOCKERHUB_ORG_ID
+    commands:
+      - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+      - docker tag api:latest $DOCKERHUB_ORG_ID/api-staging:latest
+      - docker push $DOCKERHUB_ORG_ID/api-staging:latest
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+    when:
+      branch:
+        - master
+      event:
+        - push
+
+  - name: publish production images to DockerHub
+    image: docker
+    environment:
+      DOCKERHUB_USERNAME:
+        from_secret: DOCKERHUB_USERNAME
+      DOCKERHUB_PASSWORD:
+        from_secret: DOCKERHUB_PASSWORD
+      DOCKERHUB_ORG_ID:
+        from_secret: DOCKERHUB_ORG_ID
+    commands:
+      - docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD
+      - docker tag api:latest $DOCKERHUB_ORG_ID/api:latest
+      - docker push $DOCKERHUB_ORG_ID/api:latest
+    volumes:
+      - name: docker
+        path: /var/run/docker.sock
+    when:
+      branch:
+        - production
+      event:
+        - push
+volumes:
+  - name: docker
+    host:
+      path: /var/run/docker.sock

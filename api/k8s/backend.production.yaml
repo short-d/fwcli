@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: production
+  name: api
+  labels:
+    app: api
+    tier: backend
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: api
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: api
+        tier: backend
+    spec:
+      containers:
+        - name: api
+          image: shortorg/api
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          args:
+            - ./build/app
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: api-db
+                  key: host
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: api-db
+                  key: port
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: api-db
+                  key: user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: api-db
+                  key: password
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: api-db
+                  key: name
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: production
+  name: api
+spec:
+  selector:
+    app: api
+    tier: backend
+  ports:
+    - name: graphql
+      port: 8080
+
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  namespace: production
+  name: api
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/frontend-entry-points: http,https
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+    traefik.ingress.kubernetes.io/redirect-permanent: "true"
+    traefik.ingress.kubernetes.io/whitelist-source-range: "0.0.0.0/0"
+    ingress.kubernetes.io/whitelist-x-forwarded-for: "true"
+spec:
+  tls:
+    - hosts:
+        - gql-api.short-d.com
+      secretName: short-d.com-tls
+  rules:
+    - host: gql-api.short-d.com
+      http:
+        paths:
+          - backend:
+              serviceName: api
+              servicePort: graphql

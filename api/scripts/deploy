@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+kubectl -R -f apply k8s/secrets
+kubectl -R -f apply k8s
