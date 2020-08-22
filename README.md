@@ -13,14 +13,16 @@ Maintain microservices in your hands
 
 ## Getting Started
 
-1. Install the CLI
+1. Install the CLI.
    
    ```
    go install github.com/short-d/fwcli
    ```
 
-1. Generate repo for a new service
+1. Generate repo for a new service.
 
    ```
    fwcli new sample
    ```
+   
+1. [Deploy](https://github.com/short-d/app-template) to Short Cloud (This will be fully automated soon).
